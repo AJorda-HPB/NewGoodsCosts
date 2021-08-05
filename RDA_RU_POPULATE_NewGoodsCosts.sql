@@ -14,6 +14,11 @@ GO
 --      8/2/2021 aj
 --          -Refactored to run off the @FirstDayOfMonth var.
 -- 			-First save to ReportsView, first run for July 2021 data
+--      8/4/2021 aj
+--          -Switched Online Sales to use ShipDate, instead of OrderDate.
+--      8/5/2021 aj
+--          -Refactored scan/frln/dist logic into its own table: RDA_NewGoodsCosts_PTypeCategory
+--TODO      -Add links to OFS for HPB.com sales, since those can cross ship, too
 -- Description:	Updates/Inserts to RDA_RU_NewGoodsCosts
 -- =============================================
 ALTER PROCEDURE [dbo].[RDA_RU_Populate_NewGoodsCosts]
@@ -22,10 +27,10 @@ ALTER PROCEDURE [dbo].[RDA_RU_Populate_NewGoodsCosts]
 			@FirstDayOfMonth date
 -- declare	@FirstDayOfMonth date = datefromparts(year(getdate()),month(getdate())-1,1)
 
-AS 
-BEGIN 
+-- AS 
+-- BEGIN 
 
-SET NOCOUNT ON;
+-- SET NOCOUNT ON;
 
 declare @StartDate 	date
 declare @EndDate    date
@@ -144,7 +149,7 @@ select
     datefromparts(year(sih.BusinessDate),month(sih.BusinessDate),1)[BusinessMonth]
 	,loc.LocationNo
 	,1[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(sih.Quantity * case when sih.IsReturn = 'Y' then -1 else 1 end)[Qty]
 	,sum(sih.Quantity * pm.Cost * case when sih.IsReturn = 'Y' then -1 else 1 end)[Cost]
 	,sum(sih.ExtendedAmt)[Val]
@@ -156,17 +161,17 @@ from rHPB_Historical..SalesHeaderHistory_Recent shh
 		and sih.SalesXactionId = shh.SalesXactionID
 	inner join ReportsData..Locations loc on sih.LocationID = loc.LocationID
 	inner join ReportsData..ProductMaster pm on sih.ItemCode = pm.Itemcode 
-	inner join ReportsData..ProductTypes pt on pm.ProductType = pt.ProductType 
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where shh.Status = 'A'
 	and shh.XactionType = 'S'
 	and sih.BusinessDate >= @StartDate
 	and sih.BusinessDate < @EndDate
-	and pm.ProductType not in ('PGC ','EGC ')
-	and pt.PTypeClass <> 'USED'
+	and pc.PTypeClass = 'NEW'
+	and pc.PTypeCategory <> 'gc'
 group by 
     datefromparts(year(sih.BusinessDate),month(sih.BusinessDate),1)
 	,loc.LocationNo
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 
 
@@ -178,7 +183,7 @@ select
     datefromparts(year(om.ShipDate),month(om.ShipDate),1)[BusinessMonth]
     ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,2[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(om.ShippedQuantity)[Qty]
 	,sum(pm.Cost)[Cost]
 	,sum(om.Price)[Val]
@@ -186,12 +191,13 @@ select
 from isis..Order_Monsoon om 
 	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID
 	--pre-2014ish, SAS & XFRs would show up in Monsoon, so specifying 'MON' excludes those
-	left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'MON' 
+	inner join ReportsData..OFS_Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'MON' 
 	--Grabs fulfilment location where available, otherwise uses originating location
-	left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4)
+	inner join ReportsData..OFS_Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4)
 		--Problem orders have ProblemStatusID not null
 		and (od.ProblemStatusID is null or od.ProblemStatusID = 0)	
 	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where om.ShippedQuantity > 0
 	and om.OrderStatus in ('New','Pending','Shipped')
 	and om.ShipDate < @EndDate 
@@ -200,7 +206,7 @@ where om.ShippedQuantity > 0
 group by 
     datefromparts(year(om.ShipDate),month(om.ShipDate),1)
     ,isnull(od.LocationNo,fa.HPBLocationNo)
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 -- Refunds data--------
 insert into #Sales_prep
@@ -208,7 +214,7 @@ select
     datefromparts(year(om.RefundDate),month(om.RefundDate),1)[BusinessMonth]
     ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,-2[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	--Think refunded product doesn't go back to the store per se... 
 	,0[Qty] 
 	,0[Cost]
@@ -217,12 +223,13 @@ select
 from isis..Order_Monsoon om 
 	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID
 	--pre-2014ish, SAS & XFRs would show up in Monsoon, so this excludes those
-	left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'MON' 
+	inner join ReportsData..OFS_Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'MON' 
 	--Grabs fulfilment location where available, otherwise uses originating location
-	left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4)
+	inner join ReportsData..OFS_Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4)
 		--Problem orders have ProblemStatusID not null
 		and (od.ProblemStatusID is null or od.ProblemStatusID = 0)	
 	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where om.OrderStatus in ('New','Pending','Shipped')
 	and om.RefundAmount > 0
 	and om.RefundDate < @EndDate 
@@ -231,7 +238,7 @@ where om.OrderStatus in ('New','Pending','Shipped')
 group by 
     datefromparts(year(om.RefundDate),month(om.RefundDate),1)
     ,isnull(od.LocationNo,fa.HPBLocationNo)
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 
 -- Collect HPB.com Online Sales Data---------------------------
@@ -243,7 +250,7 @@ select
     ,fa.HPBLocationNo[LocationNo]
     -- ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,3[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(om.Quantity)[Qty]
 	,sum(pm.Cost)[Cost]
 	,sum(om.ExtendedAmount)[Val]
@@ -251,10 +258,10 @@ select
 from isis..Order_Omni om 
 	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID
 	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
-    inner join ReportsView..ProdGoals_ItemMaster it on pm.ItemCode = it.ItemCode
-	-- left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
+	-- inner join ReportsData..OFS_Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
 	-- --Grabs fulfilment location where available, otherwise uses originating location
-	-- left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
+	-- inner join ReportsData..OFS_Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
 where om.OrderStatus not in ('canceled')
 	and om.ItemStatus = 'shipped'
     and om.ShippingMethod <> '222'
@@ -266,7 +273,7 @@ group by
     datefromparts(year(om.ShipDate),month(om.ShipDate),1)
     ,fa.HPBLocationNo
     -- ,isnull(od.LocationNo,fa.HPBLocationNo)
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 -- Refunds data--------
 insert into #Sales_prep
@@ -275,7 +282,7 @@ select
     ,fa.HPBLocationNo[LocationNo]
     -- ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,-3[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	--Same idea... don't think we actually get the thing back to the store.
 	,0[Qty] 
 	,0[Cost]
@@ -284,9 +291,10 @@ select
 from isis..Order_Omni om 
 	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID 
 	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
-	-- left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
+	-- inner join ReportsData..OFS_Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
 	-- --Grabs fulfilment location where available, otherwise uses originating location
-	-- left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
+	-- inner join ReportsData..OFS_Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
 where om.OrderStatus not in ('canceled')
 	and om.ItemStatus = 'shipped'
     and om.ShippingMethod <> '222'
@@ -299,7 +307,7 @@ group by
     datefromparts(year(om.SiteLastModifiedDate),month(om.SiteLastModifiedDate),1)
     ,fa.HPBLocationNo
     -- ,isnull(od.LocationNo,fa.HPBLocationNo)
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 
 
@@ -310,7 +318,7 @@ select
     cast(dateadd(MM,datediff(MM,0,sih.BusinessDate),0) as date)[BusinessMonth]
     ,bw.LocationNo
 	,0[SldTy]
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(sih.Quantity * case when sih.IsReturn = 'Y' then -1 else 1 end)[Qty]
 	,sum(sih.Quantity * pm.Cost * case when sih.IsReturn = 'Y' then -1 else 1 end)[Cost]
 	,sum(sih.ExtendedAmt)[Val]
@@ -334,18 +342,18 @@ from rHPB_Historical..SalesHeaderHistory_Recent shh
         and sih.SalesXactionId = bw.tillnumber + right('000000000' + bw.transactionNumber,9) 
         and sih.LineNumber = bw.detailNumber
     inner join ReportsData..ProductMaster pm on right(replicate('0', 20) + bw.SKU, 20) = pm.ItemCode 
-	inner join ReportsData..ProductTypes pt on pm.ProductType = pt.ProductType 
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where shh.Status = 'A'
     and shh.XactionType = 'S'
 	and sih.BusinessDate >= @StartDate
 	and sih.BusinessDate < @EndDate
-	and pm.ProductType not in ('PGC ','EGC ')
-	and pt.PTypeClass <> 'USED'
+	and pc.PTypeClass = 'NEW'
+	and pc.PTypeCategory <> 'gc'
 	and sih.ItemCode = '00000000000010222778' 
 group by 
     cast(dateadd(MM,datediff(MM,0,sih.BusinessDate),0) as date)
     ,bw.LocationNo
-	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 
 
@@ -420,26 +428,25 @@ select
     datefromparts(year(xh.CreateTime),month(xh.CreateTime),1)[BusinessMonth]
 	,xh.LocationNo
 	,TransferType[XfrTy]
-	,case when pm.ProductType not like '%F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(xd.Quantity)[Qty]
 	,sum(xd.DipsCost)[Cost]
 from ReportsData..SipsTransferBinHeader xh 
     inner join ReportsData..SipsTransferBinDetail xd on xh.TransferBinNo = xd.TransferBinNo 
     inner join ReportsData..ProductMaster pm on xd.DipsItemCode = pm.ItemCode 
-	inner join ReportsData..ProductTypes pt on pm.ProductType = pt.ProductType 
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where xh.StatusCode = 3
 	and xd.StatusCode = 1
 	and TransferType in (1,2,3,7)
 	and xh.CreateTime >= @StartDate
 	and xh.CreateTime < @EndDate
-	-- and pm.ProductType not like '%F'
-	and pm.ProductType not in ('PGC ','EGC ') 
-	and pt.PTypeClass <> 'USED'
+	and pc.PTypeClass = 'NEW'
+	and pc.PTypeCategory <> 'gc'
 group by 
     datefromparts(year(xh.CreateTime),month(xh.CreateTime),1)
 	,xh.LocationNo
 	,TransferType
-	,case when pm.ProductType not like '%F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 --Collect Inbound Store to Store Xfer Data--------------------------
 --------------------------------------------------------------------
@@ -448,26 +455,25 @@ select
     datefromparts(year(xh.CreateTime),month(xh.CreateTime),1)[BusinessMonth]
 	,xh.ToLocationNo
 	,-TransferType[XfrTy]
-	,case when pm.ProductType not like '%F' then 'dist' else 'frln' end[PrCat]
+	,pc.PTypeCategory[PrCat]
 	,sum(xd.Quantity)[Qty]
 	,sum(xd.DipsCost)[Cost]
 from ReportsData..SipsTransferBinHeader xh  
     inner join ReportsData..SipsTransferBinDetail xd on xh.TransferBinNo = xd.TransferBinNo 
     inner join ReportsData..ProductMaster pm on xd.DipsItemCode = pm.ItemCode 
-	inner join ReportsData..ProductTypes pt on pm.ProductType = pt.ProductType 
+	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
 where xh.StatusCode = 3
 	and xd.StatusCode = 1
 	and TransferType = 3
 	and xh.CreateTime >= @StartDate
 	and xh.CreateTime < @EndDate
-	-- and pm.ProductType not like '%F'
-	and pm.ProductType not in ('PGC ','EGC ') 
-	and pt.PTypeClass <> 'USED'
+	and pc.PTypeClass = 'NEW'
+	and pc.PTypeCategory <> 'gc'
 group by 
     datefromparts(year(xh.CreateTime),month(xh.CreateTime),1)
 	,xh.ToLocationNo
 	,-TransferType
-	,case when pm.ProductType not like '%F' then 'dist' else 'frln' end
+	,pc.PTypeCategory
 
 
 -- Combine all Xfers data--------------------------------------
@@ -606,7 +612,8 @@ BEGIN TRY
 		
 	from #KeyTable kt
 		left join #Sales sa on sa.BusinessMonth = kt.BusinessMonth and sa.LocationNo = kt.LocationNo
-		left join #Xfers xr on xr.BusinessMonth = kt.BusinessMonth and xr.LocationNo = kt.LocationNo;
+		left join #Xfers xr on xr.BusinessMonth = kt.BusinessMonth and xr.LocationNo = kt.LocationNo
+	order by 1,2;
 
 	commit transaction
 END TRY
