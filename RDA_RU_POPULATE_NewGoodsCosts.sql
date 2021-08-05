@@ -1,51 +1,49 @@
 
-use [ReportsView]
-go
+USE [ReportsView]
+GO 
 
-set ANSI_NULLS on
-go
-set QUOTED_IDENTIFIER on
-go
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- =============================================
 -- Author:          Alicia Jorda
 -- Create date:     07/30/2021
 -- Change Log:
---      7/30/2021 aj
---          -Online sales now tracked by Ship Date, isntead of Order Date.
--- Description:	Inserts new goods costs data to the RU_NewGoodsCosts table
+--      8/2/2021 aj
+--          -Refactored to run off the @FirstDayOfMonth var.
+-- 			-First save to ReportsView, first run for July 2021 data
+-- Description:	Updates/Inserts to RDA_RU_NewGoodsCosts
 -- =============================================
+ALTER PROCEDURE [dbo].[RDA_RU_Populate_NewGoodsCosts]
 
--- create procedure [dbo].[RDA_RU_Populate_NewGoodsCosts]
-    -- Add the parameters for the stored procedure here
-    declare 
-    @FirstDayOfMonth date
-    = datefromparts(year(getdate()),month(getdate())-1,1)
--- as
--- begin
+-- Add the parameters for the stored procedure here
+			@FirstDayOfMonth date
+-- declare	@FirstDayOfMonth date = datefromparts(year(getdate()),month(getdate())-1,1)
 
-select @FirstDayOfMonth[@FirstDayOfMonth]
+AS 
+BEGIN 
 
-set NOCOUNT on;
+SET NOCOUNT ON;
 
-declare @StartDate  date
+declare @StartDate 	date
 declare @EndDate    date
 
-
--- If @FirstDayOfMonth is passed, roll up only that month. 
+-- If @FirstDayOfMonth is passed, roll up only the month of @FirstDayOfMonth. 
 if @FirstDayOfMonth is not null begin
-    set @StartDate = cast(@FirstDayOfMonth as date)
+    set @StartDate = datefromparts(year(@FirstDayOfMonth),month(@FirstDayOfMonth),1)
     set @EndDate = dateadd(month, 1, @StartDate)
 end
 
--- Otherwise, roll-up all months in last 4 years 
+-- Otherwise, roll-up all months in last 3+ years 
 -- ...or however many years are in rHPB_Historical..SalesItemHistory_Recent
 if @FirstDayOfMonth is null begin
     --Since this PARAMS_CreateDateRangeSelect generates the list of selectable dates for the report, 
     --it is used to set @StartDate and @EndDate.
-    set @StartDate = datefromparts(year(getdate())-4,1,1)
+    set @StartDate = datefromparts(year(getdate())-3,1,1)
     set @EndDate   = datefromparts(year(getdate()),month(getdate()),1)
 end
-
 
 
 --Component temp table creation--------------------------------
@@ -242,7 +240,8 @@ group by
 insert into #Sales_prep
 select 
     datefromparts(year(om.ShipDate),month(om.ShipDate),1)[BusinessMonth]
-    ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
+    ,fa.HPBLocationNo[LocationNo]
+    -- ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,3[SldTy]
 	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
 	,sum(om.Quantity)[Qty]
@@ -251,11 +250,11 @@ select
 	,sum(om.ShippingAmount)[Fee]
 from isis..Order_Omni om 
 	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID
-	left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' 
-	--Grabs fulfilment location where available, otherwise uses originating location
-	left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null
 	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
     inner join ReportsView..ProdGoals_ItemMaster it on pm.ItemCode = it.ItemCode
+	-- left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
+	-- --Grabs fulfilment location where available, otherwise uses originating location
+	-- left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
 where om.OrderStatus not in ('canceled')
 	and om.ItemStatus = 'shipped'
     and om.ShippingMethod <> '222'
@@ -265,35 +264,41 @@ where om.OrderStatus not in ('canceled')
 	and om.Quantity > 0
 group by 
     datefromparts(year(om.ShipDate),month(om.ShipDate),1)
-    ,isnull(od.LocationNo,fa.HPBLocationNo)
+    ,fa.HPBLocationNo
+    -- ,isnull(od.LocationNo,fa.HPBLocationNo)
 	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
 
 -- Refunds data--------
 insert into #Sales_prep
 select 
-    datefromparts(year(od.SiteLastModifiedDate),month(od.SiteLastModifiedDate),1)[BusinessMonth]
+    datefromparts(year(om.SiteLastModifiedDate),month(om.SiteLastModifiedDate),1)[BusinessMonth]
     ,fa.HPBLocationNo[LocationNo]
+    -- ,isnull(od.LocationNo,fa.HPBLocationNo)[LocationNo]
 	,-3[SldTy]
 	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end[PrCat]
 	--Same idea... don't think we actually get the thing back to the store.
 	,0[Qty] 
 	,0[Cost]
-	,-sum(od.ItemRefundAmount)[Val]
+	,-sum(om.ItemRefundAmount)[Val]
 	,0[Fee]
-from isis..Order_Omni od 
-	inner join isis..App_Facilities fa on od.FacilityID = fa.FacilityID
-	inner join ReportsData..ProductMaster pm on right(od.SKU,20) = pm.ItemCode
-where od.OrderStatus not in ('canceled')
-	and od.ItemStatus = 'shipped'
-    and od.ShippingMethod <> '222'
-	and od.SiteLastModifiedDate < @EndDate 
-	and od.SiteLastModifiedDate >= @StartDate 								  
-	and left(od.SKU,1) = 'D'
-	and od.Quantity > 0
-	and od.ItemRefundAmount > 0
+from isis..Order_Omni om 
+	inner join isis..App_Facilities fa on om.FacilityID = fa.FacilityID 
+	inner join ReportsData..ProductMaster pm on right(om.SKU,20) = pm.ItemCode
+	-- left join ofs..Order_Header oh on om.ISIS_OrderID = oh.ISISOrderID and oh.OrderSystem = 'HMP' and om.MarketOrderID = oh.MarketOrderID
+	-- --Grabs fulfilment location where available, otherwise uses originating location
+	-- left join ofs..Order_Detail od on oh.OrderID = od.OrderID and od.Status in (1,4) and od.ProblemStatusID is null 
+where om.OrderStatus not in ('canceled')
+	and om.ItemStatus = 'shipped'
+    and om.ShippingMethod <> '222'
+	and om.SiteLastModifiedDate < @EndDate 
+	and om.SiteLastModifiedDate >= @StartDate 								  
+	and left(om.SKU,1) = 'D'
+	and om.Quantity > 0
+	and om.ItemRefundAmount > 0
 group by 
-    datefromparts(year(od.SiteLastModifiedDate),month(od.SiteLastModifiedDate),1)
+    datefromparts(year(om.SiteLastModifiedDate),month(om.SiteLastModifiedDate),1)
     ,fa.HPBLocationNo
+    -- ,isnull(od.LocationNo,fa.HPBLocationNo)
 	,case when pm.ProductType = 'SCAN' then 'scan' when right(rtrim(pm.ProductType),1) <> 'F' then 'dist' else 'frln' end
 
 
@@ -518,81 +523,110 @@ select m.BusinessMonth
 from Locs l cross join Mos m 
 
 
--- If a new roll-up is necessary a script will set @FirstDayOfMonth to the month to be re-rolled, 
--- that month will be deleted, then it will be inserted in the INSERT statement that follows.
-delete ru   -- select count(*)
-from ReportsView..RDA_RU_NewGoodsCosts ru
-	inner join #KeyTable kt on ru.BusinessMonth = kt.BusinessMonth and ru.LocationNo = kt.LocationNo
+----Transaction 1---------------------------------------------------
+--Remove any existing records from RDA_RU_NewGoodsCosts-------------[
+------------------------------------------------------------------[
+BEGIN TRY
+	begin transaction
+
+	delete ru   -- select count(*)
+	from ReportsView..RDA_RU_NewGoodsCosts ru
+		inner join #KeyTable kt on ru.BusinessMonth = kt.BusinessMonth and ru.LocationNo = kt.LocationNo;
+			
+	commit transaction
+END TRY
+
+BEGIN CATCH
+	if @@trancount > 0 rollback transaction
+	declare @msg1 nvarchar(2048) = error_message()  
+	raiserror (@msg1, 16, 1)
+END CATCH
+---------------------------------------------------]
+----------------------------------------------------]
 
 
--- finally adding new/re run records to the table...
-insert into ReportsView..RDA_RU_NewGoodsCosts
-select 
-    kt.BusinessMonth
-    ,kt.LocationNo
-	,isnull(sa.sDistSoldCost,0)[DistSoldCost]
-	,isnull(sa.sDistSoldVal,0)[DistSoldVal]
-	,isnull(sa.sFrlnSoldCost,0)[FrlnSoldCost]
-	,isnull(sa.sFrlnSoldVal,0)[FrlnSoldVal]
-	,isnull(sa.sScanSoldQty,0)[ScanSoldQty]
-	,isnull(sa.sScanSoldCost,0)[ScanSoldCost]
-	,isnull(sa.sScanSoldVal,0)[ScanSoldVal]
-	,isnull(xr.DistTshQty,0)[DistTshQty]
-	,isnull(xr.DistTshCost,0)[DistTshCost]
-	,isnull(xr.DistDmgQty,0)[DistDmgQty]
-	,isnull(xr.DistDmgCost,0)[DistDmgCost]
-	,isnull(xr.DistDntQty,0)[DistDntQty]
-	,isnull(xr.DistDntCost,0)[DistDntCost]
-	,isnull(xr.TotDistRfiQty,0)[TotDistRfiQty]
-	,isnull(xr.TotDistRfiCost,0)[TotDistRfiCost]
-	
-	-- Online Sales...
-	,isnull(sa.oDistSoldCost,0)[DistOnlineSoldCost]
-	,isnull(sa.oDistSoldVal,0) [DistOnlineSoldVal]
-	,isnull(sa.oFrlnSoldCost,0)[FrlnOnlineSoldCost]
-	,isnull(sa.oFrlnSoldVal,0) [FrlnOnlineSoldVal]
-	
-	-- Bookworm Sales...
-	,isnull(sa.bwDistSoldCost,0)[DistBookwormSoldCost]
-	,isnull(sa.bwDistSoldVal,0) [DistBookwormSoldVal]
-	,isnull(sa.bwFrlnSoldCost,0)[FrlnBookwormSoldCost]
-	,isnull(sa.bwFrlnSoldVal,0) [FrlnBookwormSoldVal]
-	
-	-- Frontline Xfers...
-	,isnull(xr.FrlnTshQty,0)[FrlnTshQty]
-	,isnull(xr.FrlnTshCost,0)[FrlnTshCost]
-	,isnull(xr.FrlnDmgQty,0)[FrlnDmgQty]
-	,isnull(xr.FrlnDmgCost,0)[FrlnDmgCost]
-	,isnull(xr.FrlnDntQty,0)[FrlnDntQty]
-	,isnull(xr.FrlnDntCost,0)[FrlnDntCost]
-	,isnull(xr.TotFrlnRfiQty,0)[TotFrlnRfiQty]
-	,isnull(xr.TotFrlnRfiCost,0)[TotFrlnRfiCost]
 
-	-- Dist & Frln Location Xfers
-	,isnull(xr.DistOStSQty,0) [DistLocXfrOutQty]
-	,isnull(xr.DistOStSCost,0)[DistLocXfrOutCost]
-	,isnull(xr.DistIStSQty,0) [DistLocXfrInQty]
-	,isnull(xr.DistIStSCost,0)[DistLocXfrInCost]
-	,isnull(xr.FrlnOStSQty,0) [FrlnLocXfrOutQty]
-	,isnull(xr.FrlnOStSCost,0)[FrlnLocXfrOutCost]
-	,isnull(xr.FrlnIStSQty,0) [FrlnLocXfrInQty]
-	,isnull(xr.FrlnIStSCost,0)[FrlnLocXfrInCost]
-	
-from #KeyTable kt
-	left join #Sales sa on sa.BusinessMonth = kt.BusinessMonth and sa.LocationNo = kt.LocationNo
-	left join #Xfers xr on xr.BusinessMonth = kt.BusinessMonth and xr.LocationNo = kt.LocationNo
-order by kt.BusinessMonth
-	,kt.LocationNo
+----Transaction 2----------------------------------------------
+--Adds new/updated records to RDA_RU_NewGoodsCosts-------------[
+-------------------------------------------------------------[
+BEGIN TRY
+	begin transaction
+
+	insert into ReportsView..RDA_RU_NewGoodsCosts
+	select 
+		kt.BusinessMonth
+		,kt.LocationNo
+		,isnull(sa.sDistSoldCost,0)[DistSoldCost]
+		,isnull(sa.sDistSoldVal,0)[DistSoldVal]
+		,isnull(sa.sFrlnSoldCost,0)[FrlnSoldCost]
+		,isnull(sa.sFrlnSoldVal,0)[FrlnSoldVal]
+		,isnull(sa.sScanSoldQty,0)[ScanSoldQty]
+		,isnull(sa.sScanSoldCost,0)[ScanSoldCost]
+		,isnull(sa.sScanSoldVal,0)[ScanSoldVal]
+		,isnull(xr.DistTshQty,0)[DistTshQty]
+		,isnull(xr.DistTshCost,0)[DistTshCost]
+		,isnull(xr.DistDmgQty,0)[DistDmgQty]
+		,isnull(xr.DistDmgCost,0)[DistDmgCost]
+		,isnull(xr.DistDntQty,0)[DistDntQty]
+		,isnull(xr.DistDntCost,0)[DistDntCost]
+		,isnull(xr.TotDistRfiQty,0)[TotDistRfiQty]
+		,isnull(xr.TotDistRfiCost,0)[TotDistRfiCost]
+		
+		-- Online Sales...
+		,isnull(sa.oDistSoldCost,0)[DistOnlineSoldCost]
+		,isnull(sa.oDistSoldVal,0) [DistOnlineSoldVal]
+		,isnull(sa.oFrlnSoldCost,0)[FrlnOnlineSoldCost]
+		,isnull(sa.oFrlnSoldVal,0) [FrlnOnlineSoldVal]
+		
+		-- Bookworm Sales...
+		,isnull(sa.bwDistSoldCost,0)[DistBookwormSoldCost]
+		,isnull(sa.bwDistSoldVal,0) [DistBookwormSoldVal]
+		,isnull(sa.bwFrlnSoldCost,0)[FrlnBookwormSoldCost]
+		,isnull(sa.bwFrlnSoldVal,0) [FrlnBookwormSoldVal]
+		
+		-- Frontline Xfers...
+		,isnull(xr.FrlnTshQty,0)[FrlnTshQty]
+		,isnull(xr.FrlnTshCost,0)[FrlnTshCost]
+		,isnull(xr.FrlnDmgQty,0)[FrlnDmgQty]
+		,isnull(xr.FrlnDmgCost,0)[FrlnDmgCost]
+		,isnull(xr.FrlnDntQty,0)[FrlnDntQty]
+		,isnull(xr.FrlnDntCost,0)[FrlnDntCost]
+		,isnull(xr.TotFrlnRfiQty,0)[TotFrlnRfiQty]
+		,isnull(xr.TotFrlnRfiCost,0)[TotFrlnRfiCost]
+
+		-- Dist & Frln Location Xfers
+		,isnull(xr.DistOStSQty,0) [DistLocXfrOutQty]
+		,isnull(xr.DistOStSCost,0)[DistLocXfrOutCost]
+		,isnull(xr.DistIStSQty,0) [DistLocXfrInQty]
+		,isnull(xr.DistIStSCost,0)[DistLocXfrInCost]
+		,isnull(xr.FrlnOStSQty,0) [FrlnLocXfrOutQty]
+		,isnull(xr.FrlnOStSCost,0)[FrlnLocXfrOutCost]
+		,isnull(xr.FrlnIStSQty,0) [FrlnLocXfrInQty]
+		,isnull(xr.FrlnIStSCost,0)[FrlnLocXfrInCost]
+		
+	from #KeyTable kt
+		left join #Sales sa on sa.BusinessMonth = kt.BusinessMonth and sa.LocationNo = kt.LocationNo
+		left join #Xfers xr on xr.BusinessMonth = kt.BusinessMonth and xr.LocationNo = kt.LocationNo;
+
+	commit transaction
+END TRY
+
+BEGIN CATCH
+	if @@trancount > 0 rollback transaction
+	declare @msg2 nvarchar(2048) = error_message()  
+	raiserror (@msg2, 16, 1)
+END CATCH
+---------------------------------------------------]
+----------------------------------------------------]
 
 
---Temp File Cleanup--------------------------------------------
----------------------------------------------------------------
+
+--Temp File Cleanup--------------
+---------------------------------
 drop table if exists #Sales_prep
 drop table if exists #Xfers_prep
 drop table if exists #Sales
 drop table if exists #Xfers
 drop table if exists #KeyTable
 
-
-
--- end
+END
