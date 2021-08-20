@@ -1,12 +1,9 @@
 
 
-USE [ReportsView]
+USE [Report_Analytics]
 GO
 
 DROP TABLE IF EXISTS [dbo].[RDA_NewGoodsCosts_PTypeCategory]
-GO
-
-USE [ReportsView]
 GO
 
 SET ANSI_NULLS ON
@@ -32,48 +29,5 @@ CREATE TABLE [dbo].[RDA_NewGoodsCosts_PTypeCategory](
                 ,fillfactor = 97
 			) on [PRIMARY]
 ) on [PRIMARY]
-go
+GO
 
-
-insert into [dbo].[RDA_NewGoodsCosts_PTypeCategory]
-select pt.ProductType 
-    ,case when pt.PTypeClass = 'USED' then 'used'
-          when pt.ProductType in ('PGC','EGC') then 'gc'
-          when pt.ProductType in ('SCAN','XTRA') then lower(pt.ProductType) 
-          when right(rtrim(pt.ProductType),1) <> 'F' then 'dist' 
-          when right(rtrim(pt.ProductType),1) = 'F' then 'frln' 
-          else 'zzz' end
-    ,pt.PTypeClass
-from ReportsData..ProductTypes pt 
-
-
-
-
-
-select * 
-from ReportsView..RDA_NewGoodsCosts_PTypeCategory pc 
-order by PTypeClass
-    ,PTypeCategory
-
-
-select pc.*
-    ,sih.ItemCode
-    ,pm.Title
-    ,loc.LocationNo
-    ,sum(sih.Quantity)[SldQty]
-    ,sum(sih.ExtendedAmt)[SldVal]
-from HPB_SALES..SHH2021 shh 
-	inner join HPB_SALES..SIH2021 sih 
-		on sih.LocationID = shh.LocationID
-		and sih.BusinessDate = shh.BusinessDate
-		and sih.SalesXactionId = shh.SalesXactionID
-	inner join ReportsData..Locations loc on sih.LocationID = loc.LocationID
-	inner join ReportsData..ProductMaster pm on sih.ItemCode = pm.Itemcode 
-	inner join ReportsView..RDA_NewGoodsCosts_PTypeCategory pc on pm.ProductType = pc.ProductType 
-where pc.PTypeClass = 'SPCL' 
-group by pc.ProductType
-    ,pc.PTypeCategory
-    ,pc.PTypeClass
-    ,sih.ItemCode
-    ,pm.Title
-    ,loc.LocationNo
