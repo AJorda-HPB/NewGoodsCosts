@@ -7,10 +7,11 @@ GO
 -- =======================================================
 -- Author:		Alicia Jorda
 -- Create date: 8/6/2021
--- Description:	Get report data from roll-up table
+-- Description:	Costs from new goods sales & transfers
+-- Help Desk Ticket: #16597
 -- =======================================================
 
-CREATE   PROCEDURE [dbo].[RDA_RPT_NewGoodsCosts]
+CREATE   PROCEDURE [dbo].[RDA_COGS_NewGoodsCosts]
 	-- Add the parameters for the stored procedure here
 
     -- Fed from PARAMS_DynFilter_Locations ?
@@ -45,7 +46,6 @@ BEGIN
         FROM ReportsData..Locations loc
         WHERE 
             loc.RetailStore = 'Y' AND
-            CAST(RIGHT(loc.LocationNo, 4) AS INT) < 200 AND --Locations with LocationNo over 200 are frequently misrepresented in Reports..Locations currently
             loc.Status = 'A'
 
     IF @LocationType = 'Store'
@@ -67,8 +67,7 @@ BEGIN
         WHERE
             RTRIM(loc.DistrictCode) = @Location AND
             loc.RetailStore = 'Y' AND
-            loc.Status = 'A' AND
-            CAST(RIGHT(loc.LocationNo, 4) AS INT) < 200 
+            loc.Status = 'A' 
             
     IF @LocationType = 'Region'
         INSERT INTO #ReportLocations
@@ -81,8 +80,7 @@ BEGIN
             AND rl.Region = @Location
         WHERE
             loc.RetailStore = 'Y' AND
-            loc.Status = 'A' AND
-            CAST(RIGHT(loc.LocationNo, 4) AS INT) < 200 
+            loc.Status = 'A'
 
 
 	SELECT ngc.BusinessMonth
