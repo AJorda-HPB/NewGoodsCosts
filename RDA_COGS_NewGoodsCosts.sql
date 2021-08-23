@@ -91,9 +91,9 @@ BEGIN
 		,ngc.FrlnSoldCost
 		,ngc.ScanSoldCost
 
-		,ngc.DistSoldVal
-		,ngc.FrlnSoldVal
-		,ngc.ScanSoldVal
+		,ngc.DistSoldVal[DistSoldAmt]
+		,ngc.FrlnSoldVal[FrlnSoldAmt]
+		,ngc.ScanSoldVal[ScanSoldAmt]
 
 		,ngc.ScanSoldQty
 
@@ -101,48 +101,48 @@ BEGIN
 		,ngc.DistOnlineSoldCost
 		,ngc.FrlnOnlineSoldCost
 
-		,ngc.DistOnlineSoldVal
-		,ngc.FrlnOnlineSoldVal
+		,ngc.DistOnlineSoldVal[DistOnlineSoldAmt]
+		,ngc.FrlnOnlineSoldVal[FrlnOnlineSoldAmt]
 
 		-- Bookworm Sales...
 		,ngc.DistBookwormSoldCost
 		,ngc.FrlnBookwormSoldCost
 
-		,ngc.DistBookwormSoldVal
-		,ngc.FrlnBookwormSoldVal
+		,ngc.DistBookwormSoldVal[DistBookwormSoldAmt]
+		,ngc.FrlnBookwormSoldVal[FrlnBookwormSoldAmt]
 
 		-- Total Xfers In/Out
-		,ngc.DistTotXfrInCost
-		,ngc.DistTotXfrOutCost
-		,ngc.FrlnTotXfrInCost
-		,ngc.FrlnTotXfrOutCost
+		,ngc.DistTotXfrInCost[DistTotalTransfersInCost]
+		,ngc.DistTotXfrOutCost[DistTotalTransfersOutCost]
+		,ngc.FrlnTotXfrInCost[FrlnTotalTransfersInCost]
+		,ngc.FrlnTotXfrOutCost[FrlnTotalTransfersOutCost]
 
-		,ngc.DistTotXfrInQty
-		,ngc.DistTotXfrOutQty
-		,ngc.FrlnTotXfrInQty
-		,ngc.FrlnTotXfrOutQty
+		,ngc.DistTotXfrInQty[DistTotalTransfersInQty]
+		,ngc.DistTotXfrOutQty[DistTotalTransfersOutQty]
+		,ngc.FrlnTotXfrInQty[FrlnTotalTransfersInQty]
+		,ngc.FrlnTotXfrOutQty[FrlnTotalTransfersOutQty]
 
         -- Total RFI Transfers
-		,ngc.TotDistRfiCost	
-		,ngc.TotFrlnRfiCost
+		,ngc.TotDistRfiCost[DistTotalRfiCost]
+		,ngc.TotFrlnRfiCost[FrlnTotalRfiCost]
 
-		,ngc.TotDistRfiQty
-		,ngc.TotFrlnRfiQty
+		,ngc.TotDistRfiQty[DistTotalRfiQty]
+		,ngc.TotFrlnRfiQty[FrlnTotalRfiQty]
 
         -- Tsh/Dmg/Dnt Transfers
-		,ngc.DistTshCost
-		,ngc.DistDmgCost
-		,ngc.DistDntCost
-		,ngc.FrlnTshCost
-		,ngc.FrlnDmgCost
-		,ngc.FrlnDntCost
+		,ngc.DistTshCost[DistTrashCost]
+		,ngc.DistDmgCost[DistDamageCost]
+		,ngc.DistDntCost[DistDonateCost]
+		,ngc.FrlnTshCost[FrlnTrashCost]
+		,ngc.FrlnDmgCost[FrlnDamageCost]
+		,ngc.FrlnDntCost[FrlnDonateCost]
 
-		,ngc.DistTshQty
-		,ngc.DistDmgQty
-		,ngc.DistDntQty
-		,ngc.FrlnTshQty
-		,ngc.FrlnDmgQty
-		,ngc.FrlnDntQty
+		,ngc.DistTshQty[DistTrashQty]
+		,ngc.DistDmgQty[DistDamageQty]
+		,ngc.DistDntQty[DistDonateQty]
+		,ngc.FrlnTshQty[FrlnTrashQty]
+		,ngc.FrlnDmgQty[FrlnDamageQty]
+		,ngc.FrlnDntQty[FrlnDonateQty]
 
 	FROM Report_Analytics.dbo.RDA_RU_NewGoodsCosts ngc 
 		INNER JOIN #ReportLocations rl on ngc.LocationNo = rl.LocationNo    
