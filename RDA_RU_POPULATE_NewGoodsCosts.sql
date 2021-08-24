@@ -18,6 +18,8 @@ GO
 --      8/6/2021 aj
 --	      -Added links to OFS for HPB.com orders, since those can also cross ship.
 --	      -Confirmed ListingInstanceID = NULL orders in ISIS..Orders_OMNI have been fixed.
+--      8/24/2021 aj
+--	      -Fixed bugin Xfers where EaCost was summed instead of ExtCost 
 --TODOs-----------------------------------------
 --	    [ ] Table structure: Consider moving the pivot logic from #Sales & #Xfers over to the RDA_ACT_NewGoodsCosts sproc 
 -- 			& refactoring RDA_RU_NewGoodsCosts to be like the %_prep tables but with a generalized SldTy/XfrTy col
@@ -431,7 +433,7 @@ select
 	,TransferType[XfrTy]
 	,pc.PTypeCategory[PrCat]
 	,sum(xd.Quantity)[Qty]
-	,sum(xd.DipsCost)[Cost]
+	,sum(xd.Quantity * xd.DipsCost)[Cost]
 from ReportsData..SipsTransferBinHeader xh 
     inner join ReportsData..SipsTransferBinDetail xd on xh.TransferBinNo = xd.TransferBinNo 
     inner join ReportsData..ProductMaster pm on xd.DipsItemCode = pm.ItemCode 
@@ -460,7 +462,7 @@ select
 	,-TransferType[XfrTy]
 	,pc.PTypeCategory[PrCat]
 	,sum(xd.Quantity)[Qty]
-	,sum(xd.DipsCost)[Cost]
+	,sum(xd.Quantity * xd.DipsCost)[Cost]
 from ReportsData..SipsTransferBinHeader xh  
     inner join ReportsData..SipsTransferBinDetail xd on xh.TransferBinNo = xd.TransferBinNo 
     inner join ReportsData..ProductMaster pm on xd.DipsItemCode = pm.ItemCode 
