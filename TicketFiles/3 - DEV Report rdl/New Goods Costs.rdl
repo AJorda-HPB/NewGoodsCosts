@@ -8,205 +8,18 @@
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>d4e4f6a7-5f3c-4510-b9e7-8cca8cc4cf91</rd:DataSourceID>
     </DataSource>
-    <DataSource Name="Production_RR">
-      <DataSourceReference>Production_RR</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>b55a0713-f042-49bc-ac03-9fa68b554282</rd:DataSourceID>
-    </DataSource>
     <DataSource Name="Development_RR">
       <DataSourceReference>Development_RR</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>c5dc978c-d3e9-45bc-8630-ad9f681b5e53</rd:DataSourceID>
+      <rd:DataSourceID>9fa6ea1a-396c-43ab-b5c3-f1a493e41c34</rd:DataSourceID>
+    </DataSource>
+    <DataSource Name="Production_RR">
+      <DataSourceReference>Production_RR</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>5ca03a84-1733-40c0-860d-dea330407412</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="RDA_RPT_NewGoodsCosts">
-      <Query>
-        <DataSourceName>Development_RR</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@LocationType">
-            <Value>=Parameters!LocationType.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@Location">
-            <Value>=Parameters!Location.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@StartDate">
-            <Value>=Parameters!StartDate.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@EndDate">
-            <Value>=Parameters!EndDate.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandType>StoredProcedure</CommandType>
-        <CommandText>RDA_RPT_NewGoodsCosts</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="BusinessMonth">
-          <DataField>BusinessMonth</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="LocationNo">
-          <DataField>LocationNo</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="DistSoldCost">
-          <DataField>DistSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistSoldVal">
-          <DataField>DistSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnSoldCost">
-          <DataField>FrlnSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnSoldVal">
-          <DataField>FrlnSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="ScanSoldQty">
-          <DataField>ScanSoldQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="ScanSoldCost">
-          <DataField>ScanSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="ScanSoldVal">
-          <DataField>ScanSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistOnlineSoldCost">
-          <DataField>DistOnlineSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistOnlineSoldVal">
-          <DataField>DistOnlineSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnOnlineSoldCost">
-          <DataField>FrlnOnlineSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnOnlineSoldVal">
-          <DataField>FrlnOnlineSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistBookwormSoldCost">
-          <DataField>DistBookwormSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistBookwormSoldVal">
-          <DataField>DistBookwormSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnBookwormSoldCost">
-          <DataField>FrlnBookwormSoldCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnBookwormSoldVal">
-          <DataField>FrlnBookwormSoldVal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistTshQty">
-          <DataField>DistTshQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="DistTshCost">
-          <DataField>DistTshCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTshQty">
-          <DataField>FrlnTshQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTshCost">
-          <DataField>FrlnTshCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistDmgQty">
-          <DataField>DistDmgQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="DistDmgCost">
-          <DataField>DistDmgCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnDmgQty">
-          <DataField>FrlnDmgQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="FrlnDmgCost">
-          <DataField>FrlnDmgCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistDntQty">
-          <DataField>DistDntQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="DistDntCost">
-          <DataField>DistDntCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnDntQty">
-          <DataField>FrlnDntQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="FrlnDntCost">
-          <DataField>FrlnDntCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="TotDistRfiQty">
-          <DataField>TotDistRfiQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="TotDistRfiCost">
-          <DataField>TotDistRfiCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="TotFrlnRfiQty">
-          <DataField>TotFrlnRfiQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="TotFrlnRfiCost">
-          <DataField>TotFrlnRfiCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistTotXfrOutQty">
-          <DataField>DistTotXfrOutQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="DistTotXfrOutCost">
-          <DataField>DistTotXfrOutCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTotXfrOutQty">
-          <DataField>FrlnTotXfrOutQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTotXfrOutCost">
-          <DataField>FrlnTotXfrOutCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="DistTotXfrInQty">
-          <DataField>DistTotXfrInQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="DistTotXfrInCost">
-          <DataField>DistTotXfrInCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTotXfrInQty">
-          <DataField>FrlnTotXfrInQty</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="FrlnTotXfrInCost">
-          <DataField>FrlnTotXfrInCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="PARAMS_DynFilter_Locations">
       <Query>
         <DataSourceName>Development_RR</DataSourceName>
@@ -228,6 +41,222 @@
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
+    </DataSet>
+    <DataSet Name="RDA_COGS_NewGoodsCosts">
+      <Query>
+        <DataSourceName>Development_RR</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@LocationType">
+            <Value>=Parameters!LocationType.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Location">
+            <Value>=Parameters!Location.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>RDA_COGS_NewGoodsCosts</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="BusinessMonth">
+          <DataField>BusinessMonth</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="LocationNo">
+          <DataField>LocationNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DistSoldCost">
+          <DataField>DistSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnSoldCost">
+          <DataField>FrlnSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ScanSoldCost">
+          <DataField>ScanSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistSoldAmt">
+          <DataField>DistSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnSoldAmt">
+          <DataField>FrlnSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ScanSoldAmt">
+          <DataField>ScanSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ScanSoldQty">
+          <DataField>ScanSoldQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistOnlineSoldCost">
+          <DataField>DistOnlineSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnOnlineSoldCost">
+          <DataField>FrlnOnlineSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistOnlineSoldAmt">
+          <DataField>DistOnlineSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnOnlineSoldAmt">
+          <DataField>FrlnOnlineSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistBookwormSoldCost">
+          <DataField>DistBookwormSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnBookwormSoldCost">
+          <DataField>FrlnBookwormSoldCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistBookwormSoldAmt">
+          <DataField>DistBookwormSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnBookwormSoldAmt">
+          <DataField>FrlnBookwormSoldAmt</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalTransfersInCost">
+          <DataField>DistTotalTransfersInCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalTransfersOutCost">
+          <DataField>DistTotalTransfersOutCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalTransfersInCost">
+          <DataField>FrlnTotalTransfersInCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalTransfersOutCost">
+          <DataField>FrlnTotalTransfersOutCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalTransfersInQty">
+          <DataField>DistTotalTransfersInQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalTransfersOutQty">
+          <DataField>DistTotalTransfersOutQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalTransfersInQty">
+          <DataField>FrlnTotalTransfersInQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalTransfersOutQty">
+          <DataField>FrlnTotalTransfersOutQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalRfiCost">
+          <DataField>DistTotalRfiCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalRfiCost">
+          <DataField>FrlnTotalRfiCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistTotalRfiQty">
+          <DataField>DistTotalRfiQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTotalRfiQty">
+          <DataField>FrlnTotalRfiQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistTrashCost">
+          <DataField>DistTrashCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistDamageCost">
+          <DataField>DistDamageCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistDonateCost">
+          <DataField>DistDonateCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTrashCost">
+          <DataField>FrlnTrashCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnDamageCost">
+          <DataField>FrlnDamageCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FrlnDonateCost">
+          <DataField>FrlnDonateCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DistTrashQty">
+          <DataField>DistTrashQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistDamageQty">
+          <DataField>DistDamageQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="DistDonateQty">
+          <DataField>DistDonateQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnTrashQty">
+          <DataField>FrlnTrashQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnDamageQty">
+          <DataField>FrlnDamageQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="FrlnDonateQty">
+          <DataField>FrlnDonateQty</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="PARAMS_Month_Year">
+      <Query>
+        <DataSourceName>Development_RR</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>PARAMS_Month_Year</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="PARAMDATE">
+          <DataField>PARAMDATE</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="MonthYearPARAM">
+          <DataField>MonthYearPARAM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LastDayOfMonth">
+          <Value>=DateAdd("d",-1,Dateadd("m",1,Fields!PARAMDATE.Value))</Value>
+        </Field>
+      </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!PARAMDATE.Value</FilterExpression>
+          <Operator>GreaterThanOrEqual</Operator>
+          <FilterValues>
+            <FilterValue>=DateSerial(Year(Today())-3,1,1)</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
     </DataSet>
   </DataSets>
   <ReportSections>
@@ -367,17 +396,24 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox2">
+                        <Textbox Name="ReportHeader">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Globals!ReportName</Value>
+                                  <Value>=Globals!ReportName &amp; " - " 
+    &amp; Switch(Parameters!LocationType.Value = "All Locations", "All Locations", 
+             Parameters!LocationType.Value = "Store", "Store " &amp; Parameters!Location.Value, 
+             (Parameters!LocationType.Value = "District") Or (Parameters!LocationType.Value = "Region"), Parameters!Location.Value &amp; " " &amp; Parameters!LocationType.Value)
+    &amp; " - " 
+    &amp; MonthName(Month(Parameters!StartDate.Value)) &amp; " " &amp; Year(Parameters!StartDate.Value) 
+    &amp; IIF((Year(Parameters!StartDate.Value) = Year(Parameters!EndDate.Value)) 
+            And (Month(Parameters!StartDate.Value) = Month(Parameters!EndDate.Value)), "",
+          " to " &amp; MonthName(Month(Parameters!EndDate.Value)) &amp; " " &amp; Year(Parameters!EndDate.Value))</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
-                                    <FontSize>14pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -387,12 +423,12 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -414,7 +450,6 @@
                                 <TextRun>
                                   <Value>In-Store Sales</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -431,6 +466,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -457,7 +493,6 @@
                                 <TextRun>
                                   <Value>Online Sales</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -474,6 +509,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -497,7 +533,6 @@
                                 <TextRun>
                                   <Value>Bookworm Sales</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -514,6 +549,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -537,7 +573,6 @@
                                 <TextRun>
                                   <Value>Total Transfers In/Out</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -554,6 +589,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -581,7 +617,6 @@
                                 <TextRun>
                                   <Value>Total Removed from Inventory Transfers</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -598,6 +633,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -621,7 +657,6 @@
                                 <TextRun>
                                   <Value>Trash/Damage/Donate Transfers</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -638,6 +673,7 @@
                               <Color>#b2b2b2</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -674,7 +710,6 @@
                                 <TextRun>
                                   <Value>Business Month</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -709,7 +744,6 @@
                                 <TextRun>
                                   <Value>Location No</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -744,7 +778,6 @@
                                 <TextRun>
                                   <Value>Dist Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -779,7 +812,6 @@
                                 <TextRun>
                                   <Value>Frln Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -814,7 +846,6 @@
                                 <TextRun>
                                   <Value>Scan Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -847,9 +878,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Sold Val</Value>
+                                  <Value>Dist Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -882,9 +912,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Sold Val</Value>
+                                  <Value>Frln Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -917,9 +946,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Scan Sold Val</Value>
+                                  <Value>Scan Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -954,7 +982,6 @@
                                 <TextRun>
                                   <Value>Scan Sold Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -989,7 +1016,6 @@
                                 <TextRun>
                                   <Value>Dist Online Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1024,7 +1050,6 @@
                                 <TextRun>
                                   <Value>Frln Online Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1057,9 +1082,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Online Sold Val</Value>
+                                  <Value>Dist Online Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1092,9 +1116,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Online Sold Val</Value>
+                                  <Value>Frln Online Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1129,7 +1152,6 @@
                                 <TextRun>
                                   <Value>Dist Bookworm Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1164,7 +1186,6 @@
                                 <TextRun>
                                   <Value>Frln Bookworm Sold Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1197,9 +1218,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Bookworm Sold Val</Value>
+                                  <Value>Dist Bookworm Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1232,9 +1252,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Bookworm Sold Val</Value>
+                                  <Value>Frln Bookworm Sold Amt</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1267,9 +1286,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tot Xfr In Cost</Value>
+                                  <Value>Dist Total Transfers In Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1302,9 +1320,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tot Xfr Out Cost</Value>
+                                  <Value>Dist Total Transfers Out Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1337,9 +1354,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tot Xfr In Cost</Value>
+                                  <Value>Frln Total Transfers In Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1372,9 +1388,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tot Xfr Out Cost</Value>
+                                  <Value>Frln Total Transfers Out Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1407,9 +1422,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tot Xfr In Qty</Value>
+                                  <Value>Dist Total Transfers In Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1442,9 +1456,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tot Xfr Out Qty</Value>
+                                  <Value>Dist Total Transfers Out Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1477,9 +1490,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tot Xfr In Qty</Value>
+                                  <Value>Frln Total Transfers In Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1512,9 +1524,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tot Xfr Out Qty</Value>
+                                  <Value>Frln Total Transfers Out Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1547,9 +1558,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Tot Dist Rfi Cost</Value>
+                                  <Value>Dist Total Rfi Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1582,9 +1592,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Tot Frln Rfi Cost</Value>
+                                  <Value>Frln Total Rfi Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1617,9 +1626,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Tot Dist Rfi Qty</Value>
+                                  <Value>Dist Total Rfi Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1652,9 +1660,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Tot Frln Rfi Qty</Value>
+                                  <Value>Frln Total Rfi Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1687,9 +1694,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tsh Cost</Value>
+                                  <Value>Dist Trash Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1722,9 +1728,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Dmg Cost</Value>
+                                  <Value>Dist Damage Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1757,9 +1762,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Dnt Cost</Value>
+                                  <Value>Dist Donate Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1792,9 +1796,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tsh Cost</Value>
+                                  <Value>Frln Trash Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1827,9 +1830,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Dmg Cost</Value>
+                                  <Value>Frln Damage Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1862,9 +1864,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Dnt Cost</Value>
+                                  <Value>Frln Donate Cost</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1897,9 +1898,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Tsh Qty</Value>
+                                  <Value>Dist Trash Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1932,9 +1932,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Dmg Qty</Value>
+                                  <Value>Dist Damage Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1967,9 +1966,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Dist Dnt Qty</Value>
+                                  <Value>Dist Donate Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2002,9 +2000,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Tsh Qty</Value>
+                                  <Value>Frln Trash Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2037,9 +2034,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Dmg Qty</Value>
+                                  <Value>Frln Damage Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2072,9 +2068,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Frln Dnt Qty</Value>
+                                  <Value>Frln Donate Qty</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2114,7 +2109,6 @@
                                 <TextRun>
                                   <Value>=Fields!BusinessMonth.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>d</Format>
                                   </Style>
@@ -2150,7 +2144,6 @@
                                 <TextRun>
                                   <Value>=Fields!LocationNo.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2185,7 +2178,6 @@
                                 <TextRun>
                                   <Value>=Fields!DistSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2220,7 +2212,6 @@
                                 <TextRun>
                                   <Value>=Fields!FrlnSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2254,7 +2245,6 @@
                                 <TextRun>
                                   <Value>=Fields!ScanSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2279,16 +2269,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistSoldVal">
+                        <Textbox Name="DistSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistSoldVal.Value</Value>
+                                  <Value>=Fields!DistSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2297,7 +2286,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistSoldVal</rd:DefaultName>
+                          <rd:DefaultName>DistSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2313,16 +2302,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnSoldVal">
+                        <Textbox Name="FrlnSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnSoldVal.Value</Value>
+                                  <Value>=Fields!FrlnSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2331,7 +2319,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnSoldVal</rd:DefaultName>
+                          <rd:DefaultName>FrlnSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2347,16 +2335,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="ScanSoldVal1">
+                        <Textbox Name="ScanSoldAmt1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!ScanSoldVal.Value</Value>
+                                  <Value>=Fields!ScanSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2365,7 +2352,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>ScanSoldVal1</rd:DefaultName>
+                          <rd:DefaultName>ScanSoldAmt1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2390,7 +2377,6 @@
                                 <TextRun>
                                   <Value>=Fields!ScanSoldQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2423,7 +2409,6 @@
                                 <TextRun>
                                   <Value>=Fields!DistOnlineSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2457,7 +2442,6 @@
                                 <TextRun>
                                   <Value>=Fields!FrlnOnlineSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2482,16 +2466,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistOnlineSoldVal">
+                        <Textbox Name="DistOnlineSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistOnlineSoldVal.Value</Value>
+                                  <Value>=Fields!DistOnlineSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2500,7 +2483,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistOnlineSoldVal</rd:DefaultName>
+                          <rd:DefaultName>DistOnlineSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2516,16 +2499,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnOnlineSoldVal">
+                        <Textbox Name="FrlnOnlineSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnOnlineSoldVal.Value</Value>
+                                  <Value>=Fields!FrlnOnlineSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2534,7 +2516,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnOnlineSoldVal</rd:DefaultName>
+                          <rd:DefaultName>FrlnOnlineSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2559,7 +2541,6 @@
                                 <TextRun>
                                   <Value>=Fields!DistBookwormSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2593,7 +2574,6 @@
                                 <TextRun>
                                   <Value>=Fields!FrlnBookwormSoldCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2618,16 +2598,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistBookwormSoldVal">
+                        <Textbox Name="DistBookwormSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistBookwormSoldVal.Value</Value>
+                                  <Value>=Fields!DistBookwormSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2636,7 +2615,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistBookwormSoldVal</rd:DefaultName>
+                          <rd:DefaultName>DistBookwormSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2652,16 +2631,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnBookwormSoldVal">
+                        <Textbox Name="FrlnBookwormSoldAmt">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnBookwormSoldVal.Value</Value>
+                                  <Value>=Fields!FrlnBookwormSoldAmt.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2670,7 +2648,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnBookwormSoldVal</rd:DefaultName>
+                          <rd:DefaultName>FrlnBookwormSoldAmt</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2686,16 +2664,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTotXfrInCost1">
+                        <Textbox Name="DistTotalTransfersInCost1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTotXfrInCost.Value</Value>
+                                  <Value>=Fields!DistTotalTransfersInCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2704,7 +2681,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTotXfrInCost1</rd:DefaultName>
+                          <rd:DefaultName>DistTotalTransfersInCost1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2720,16 +2697,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTotXfrOutCost">
+                        <Textbox Name="DistTotalTransfersOutCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTotXfrOutCost.Value</Value>
+                                  <Value>=Fields!DistTotalTransfersOutCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2738,7 +2714,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTotXfrOutCost</rd:DefaultName>
+                          <rd:DefaultName>DistTotalTransfersOutCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2754,16 +2730,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTotXfrInCost">
+                        <Textbox Name="FrlnTotalTransfersInCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTotXfrInCost.Value</Value>
+                                  <Value>=Fields!FrlnTotalTransfersInCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2772,7 +2747,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTotXfrInCost</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalTransfersInCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2788,16 +2763,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTotXfrOutCost">
+                        <Textbox Name="FrlnTotalTransfersOutCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTotXfrOutCost.Value</Value>
+                                  <Value>=Fields!FrlnTotalTransfersOutCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2806,7 +2780,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTotXfrOutCost</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalTransfersOutCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2822,16 +2796,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTotXfrInQty">
+                        <Textbox Name="DistTotalTransfersInQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTotXfrInQty.Value</Value>
+                                  <Value>=Fields!DistTotalTransfersInQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2839,7 +2812,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTotXfrInQty</rd:DefaultName>
+                          <rd:DefaultName>DistTotalTransfersInQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2855,16 +2828,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTotXfrOutQty">
+                        <Textbox Name="DistTotalTransfersOutQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTotXfrOutQty.Value</Value>
+                                  <Value>=Fields!DistTotalTransfersOutQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2872,7 +2844,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTotXfrOutQty</rd:DefaultName>
+                          <rd:DefaultName>DistTotalTransfersOutQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2888,16 +2860,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTotXfrInQty">
+                        <Textbox Name="FrlnTotalTransfersInQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTotXfrInQty.Value</Value>
+                                  <Value>=Fields!FrlnTotalTransfersInQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2905,7 +2876,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTotXfrInQty</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalTransfersInQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2921,16 +2892,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTotXfrOutQty1">
+                        <Textbox Name="FrlnTotalTransfersOutQty1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTotXfrOutQty.Value</Value>
+                                  <Value>=Fields!FrlnTotalTransfersOutQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2938,7 +2908,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTotXfrOutQty1</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalTransfersOutQty1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2954,16 +2924,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TotDistRfiCost1">
+                        <Textbox Name="DistTotalRfiCost1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotDistRfiCost.Value</Value>
+                                  <Value>=Fields!DistTotalRfiCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -2972,7 +2941,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TotDistRfiCost1</rd:DefaultName>
+                          <rd:DefaultName>DistTotalRfiCost1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -2988,16 +2957,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TotFrlnRfiCost1">
+                        <Textbox Name="FrlnTotalRfiCost1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotFrlnRfiCost.Value</Value>
+                                  <Value>=Fields!FrlnTotalRfiCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3006,7 +2974,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TotFrlnRfiCost1</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalRfiCost1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3022,16 +2990,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TotDistRfiQty1">
+                        <Textbox Name="DistTotalRfiQty1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotDistRfiQty.Value</Value>
+                                  <Value>=Fields!DistTotalRfiQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3039,7 +3006,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TotDistRfiQty1</rd:DefaultName>
+                          <rd:DefaultName>DistTotalRfiQty1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3055,16 +3022,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TotFrlnRfiQty1">
+                        <Textbox Name="FrlnTotalRfiQty1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotFrlnRfiQty.Value</Value>
+                                  <Value>=Fields!FrlnTotalRfiQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3072,7 +3038,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TotFrlnRfiQty1</rd:DefaultName>
+                          <rd:DefaultName>FrlnTotalRfiQty1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3088,16 +3054,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTshCost">
+                        <Textbox Name="DistTrashCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTshCost.Value</Value>
+                                  <Value>=Fields!DistTrashCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3106,7 +3071,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTshCost</rd:DefaultName>
+                          <rd:DefaultName>DistTrashCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3122,16 +3087,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistDmgCost">
+                        <Textbox Name="DistDamageCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistDmgCost.Value</Value>
+                                  <Value>=Fields!DistDamageCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3140,7 +3104,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistDmgCost</rd:DefaultName>
+                          <rd:DefaultName>DistDamageCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3156,16 +3120,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistDntCost">
+                        <Textbox Name="DistDonateCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistDntCost.Value</Value>
+                                  <Value>=Fields!DistDonateCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3174,7 +3137,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistDntCost</rd:DefaultName>
+                          <rd:DefaultName>DistDonateCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3190,16 +3153,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTshCost">
+                        <Textbox Name="FrlnTrashCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTshCost.Value</Value>
+                                  <Value>=Fields!FrlnTrashCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3208,7 +3170,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTshCost</rd:DefaultName>
+                          <rd:DefaultName>FrlnTrashCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3224,16 +3186,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnDmgCost">
+                        <Textbox Name="FrlnDamageCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnDmgCost.Value</Value>
+                                  <Value>=Fields!FrlnDamageCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3242,7 +3203,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnDmgCost</rd:DefaultName>
+                          <rd:DefaultName>FrlnDamageCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3258,16 +3219,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnDntCost">
+                        <Textbox Name="FrlnDonateCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnDntCost.Value</Value>
+                                  <Value>=Fields!FrlnDonateCost.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>'$'#,0.00;('$'#,0.00)</Format>
                                   </Style>
@@ -3276,7 +3236,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnDntCost</rd:DefaultName>
+                          <rd:DefaultName>FrlnDonateCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3292,16 +3252,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistTshQty">
+                        <Textbox Name="DistTrashQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistTshQty.Value</Value>
+                                  <Value>=Fields!DistTrashQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3309,7 +3268,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistTshQty</rd:DefaultName>
+                          <rd:DefaultName>DistTrashQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3325,16 +3284,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistDmgQty">
+                        <Textbox Name="DistDamageQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistDmgQty.Value</Value>
+                                  <Value>=Fields!DistDamageQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3342,7 +3300,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistDmgQty</rd:DefaultName>
+                          <rd:DefaultName>DistDamageQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3358,16 +3316,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DistDntQty">
+                        <Textbox Name="DistDonateQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DistDntQty.Value</Value>
+                                  <Value>=Fields!DistDonateQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3375,7 +3332,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DistDntQty</rd:DefaultName>
+                          <rd:DefaultName>DistDonateQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3391,16 +3348,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnTshQty">
+                        <Textbox Name="FrlnTrashQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnTshQty.Value</Value>
+                                  <Value>=Fields!FrlnTrashQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3408,7 +3364,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnTshQty</rd:DefaultName>
+                          <rd:DefaultName>FrlnTrashQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3424,16 +3380,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnDmgQty">
+                        <Textbox Name="FrlnDamageQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnDmgQty.Value</Value>
+                                  <Value>=Fields!FrlnDamageQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3441,7 +3396,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnDmgQty</rd:DefaultName>
+                          <rd:DefaultName>FrlnDamageQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3457,16 +3412,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="FrlnDntQty">
+                        <Textbox Name="FrlnDonateQty">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FrlnDntQty.Value</Value>
+                                  <Value>=Fields!FrlnDonateQty.Value</Value>
                                   <Style>
-                                    <FontFamily>Calibri</FontFamily>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3474,7 +3428,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>FrlnDntQty</rd:DefaultName>
+                          <rd:DefaultName>FrlnDonateQty</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>#b2b2b2</Color>
@@ -3570,15 +3524,14 @@
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <FixedColumnHeaders>true</FixedColumnHeaders>
             <FixedRowHeaders>true</FixedRowHeaders>
-            <DataSetName>RDA_RPT_NewGoodsCosts</DataSetName>
-            <Top>0.25222in</Top>
+            <DataSetName>RDA_COGS_NewGoodsCosts</DataSetName>
+            <Top>0.48278in</Top>
             <Height>0.75in</Height>
             <Width>41in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
-              <FontFamily>Calibri</FontFamily>
               <FontSize>9pt</FontSize>
             </Style>
           </Tablix>
@@ -3604,7 +3557,6 @@
           <Value>All Locations</Value>
         </Values>
       </DefaultValue>
-      <AllowBlank>true</AllowBlank>
       <Prompt>Location Type</Prompt>
       <ValidValues>
         <ParameterValues>
@@ -3629,7 +3581,6 @@
     </ReportParameter>
     <ReportParameter Name="Location">
       <DataType>String</DataType>
-      <Nullable>true</Nullable>
       <DefaultValue>
         <Values>
           <Value>All Locations</Value>
@@ -3651,7 +3602,14 @@
           <Value>=DateSerial(Year(Today()),Month(Today())-1,1)</Value>
         </Values>
       </DefaultValue>
-      <Prompt>Start Date</Prompt>
+      <Prompt>Start Month</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>PARAMS_Month_Year</DataSetName>
+          <ValueField>PARAMDATE</ValueField>
+          <LabelField>MonthYearPARAM</LabelField>
+        </DataSetReference>
+      </ValidValues>
     </ReportParameter>
     <ReportParameter Name="EndDate">
       <DataType>DateTime</DataType>
@@ -3660,7 +3618,14 @@
           <Value>=DateAdd("d",-1,DateSerial(Year(Today()),Month(Today()),1))</Value>
         </Values>
       </DefaultValue>
-      <Prompt>End Date</Prompt>
+      <Prompt>End Month</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>PARAMS_Month_Year</DataSetName>
+          <ValueField>LastDayOfMonth</ValueField>
+          <LabelField>MonthYearPARAM</LabelField>
+        </DataSetReference>
+      </ValidValues>
     </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
