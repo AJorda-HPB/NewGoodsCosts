@@ -60,7 +60,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>RDA_COGS_NewGoodsCosts</CommandText>
+        <CommandText>ReportsData.dbo.RDA_COGS_NewGoodsCosts</CommandText>
       </Query>
       <Fields>
         <Field Name="BusinessMonth">
